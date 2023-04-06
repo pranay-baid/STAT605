@@ -1,0 +1,74 @@
+---
+title: "STAT405 Proposal"
+author: "Pranay Baid, Jordan Kallio"
+date: "4/6/2023"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+### Proposal for DSCP Group Project
+
+## Introduction
+
+The Amazon customer reviews dataset contains information on customer reviews of products sold on Amazon.com. The dataset includes customer reviews, product metadata (e.g., brand, price, category), and links to images of the products.
+
+## Research Question
+
+Do customers' sentiment towards products vary across different product categories on Amazon? Specifically, do customers tend to leave more positive or negative reviews for products in certain categories?
+
+## Data
+
+The dataset consists of 37 tsv files, each containing customer reviews for a different product category. The total size of the dataset is approximately 22 GB, so we will need to use compute clusters to process it.
+
+The variables in the dataset include:
+
+* marketplace: Two-letter country code (in this case, "US" for United States)
+* customer_id: Random identifier that can be used to aggregate reviews written by a single author
+* review_id: Unique ID for the review
+* product_id: Amazon Standard Identification Number (ASIN). Note: This dataset only includes products sold on Amazon.com.
+* product_parent: The parent of that ASIN. Multiple ASINs (color or format variations of the same product) can be children of the same parent.
+* product_title: Title of the product
+* product_category: Broad product category that can be used to group reviews (e.g., "Books", "Electronics", "Kitchen")
+* star_rating: The rating of the product (1 to 5 stars)
+* helpful_votes: Number of helpful votes
+* total_votes: Number of total votes the review received
+* vine: Review was written as part of the Vine program
+* verified_purchase: The review is on a verified purchase
+* review_headline: The title of the review
+* review_body: The review text
+* review_date: The date the review was written
+
+## Computational Steps
+To answer our research question, we will:
+
+* Read in the 37 tsv files containing customer reviews for each product category using the read_tsv() function from the tidyverse package.
+* Clean and preprocess the data by removing any unnecessary columns and filtering out any reviews with missing values.
+* Calculate the average star rating for each product category and perform a hypothesis test to determine if there is a significant difference in the average star ratings across categories.
+* Visualize the results using bar graphs and other appropriate plots.
+
+To make the computation run faster, we will parallelize the analysis using Slurm/HPC. We will create a shell script submit.sh that submits each job to the cluster, with each job processing a different product category. The output of each job will be saved to a separate file for later analysis.
+
+## Code to Read Data
+```{r data}
+# Load required packages
+library(tidyverse)
+
+# Set file paths
+path <- "/ProjectHPC" # replace with actual file path
+
+# Read in all tsv files
+reviews <- list.files(path, pattern = "*.tsv", full.names = TRUE) %>%
+  map(read_tsv)
+
+```
+
+## Conclusion
+
+By analyzing the sentiment of customer reviews across different product categories on Amazon, we hope to gain insights into how customers perceive and evaluate products in different domains. This information can be useful for product manufacturers and sellers in understanding customer preferences and improving their offerings.
+
+## GitHub Repository
+
+Our code and analysis will be available in the following GitHub repository: https://github.com/pranay-baid/STAT605.
