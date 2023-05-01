@@ -6,3 +6,5 @@ url="https://storage.googleapis.com/kaggle-data-sets/1412891/2342537/bundle/arch
 
 wget $url -O archive.zip
 
+Rscript unpackData.R
+
