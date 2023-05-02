@@ -7,9 +7,11 @@ library(dplyr)
 array_task_id <- 1
 
 #after testing, will use SLURM_ARRAY_TASK_ID
-#array_task_id <- as.numeric(Sys.getenv("SLURM_ARRAY_TASK_ID"))                      
+#array_task_id <- as.numeric(Sys.getenv("SLURM_ARRAY_TASK_ID")) 
 
-files <- list.files(datafiles, pattern = '\\.tsv$', full.names=TRUE)
+data.dir <- "./data"
+files <- list.files(data.dir, pattern = '\\.tsv$', full.names=TRUE)
+
 file.name <- files[array_task_id]
 data <- read_tsv(file.name)
 
