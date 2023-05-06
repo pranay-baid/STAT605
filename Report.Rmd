@@ -1,23 +1,81 @@
 ---
-title: "Report"
+title: "Amazon Customer Review Analysis Report"
 author: "Pranay Baid, Jordan Kallio"
 date: "5/5/2023"
 output: html_document
 ---
 
-Word Limit: 750 words
+# Introduction
+In conducting our project, we chose to analyze Amazon Customer Review data. 
 
-Introduction: summarize the data you analyzed, the question you pursued, your statistical computation, and your conclusion
-Body: describe your data (and its source, size, and cleaning), statistical computation, and results
-Include graphical and numeric summaries to efficiently communicate your conclusion
-Describe your statistical computation including the number of jobs you ran and the typical job time, memory, and disk space required
-Mention weaknesses of your work
-Conclusion: revisit your question and conclusion in the light of your report’s body. It could suggest future work.
+#### Research Question
+The research question we wanted to understand was: Is there any correlation between the sentiment of review and rating of the product by customers. Specifically, we wanted to discover the correlation between the sentiment of the words in reviews and the rating scores given. Furthermore, we wanted to investigate the difference in this correlation between several different product categories.
+
+#### Data Analyzed
+The data we used was a public archive.zip from Kaggle, and contained within this file were 22 Gigabytes of data, organized into 37 .tsv files based on product categories.
+
+#### Statistical Computation
+We computed 37 jobs parallelly using HPC Slurm on lunchbox virtual machine at UW-Madison. For analysing the sentiment of the review, we used VADER Sentiment Analysis library to score each review and then classify them.
+
+#### Conclusion
+
+On an high-level, the intensity of sentiment in the review is heavily correlated to the rating for the product. This basically means, if the customer likes the product really well, they are more likely to leave a 5 star rating and if they do not like it at all, it is more likely to end up with a 1 star rating.
+
+# Dataset Source
+We supplied our data from Kaggle. We did this by writing bash scripts to download archive.zip from its download link and then unpack it. From there, we used HPC slurm to run 37 parallel jobs which each processed one of the .tsv files. These jobs used the ‘readr’ package to read the .tsv file and the ‘dplyr’ package to perform preprocessing steps. Observations (reviews) in which there was no entry for the variable ‘review_body’ were removed, as our sentiment analysis relied on having a body of text to parse. Columns which were irrelevant to our analysis were dropped to pare down the data. The last step of preprocessing was data imputation, during which we filled in any remaining ‘NA’ values with the column’s median value.
+
+# Statistical Computation
+We heavily relied over Slurm HPC for our parallel computing needs and utilized VADER sentiment library for our sentiment analysis,
+
+#### Parallel Computing
+For our statistical computation, we utilized the Slurm HPC (High-Performance Computing) system. We ran a total of 37 jobs, with each job taking an average runtime of 4 hours. The memory usage for each job was approximately 10 GB, and a total of 40 GB of disk space was required to store the output data. Slurm HPC was an essential tool in our analysis, allowing us to perform complex statistical computations and efficiently process large datasets. It provided us with the necessary computational resources to complete our analysis within a reasonable timeframe, while also allowing us to optimize our resource usage to minimize costs and improve efficiency.
+
+#### Sentiment Analysis
+To perform sentiment analysis on the tweets, we used the VADER (Valence Aware Dictionary and sEntiment Reasoner) tool, which is a rule-based sentiment analysis tool specifically designed for social media. VADER assigns a sentiment score to each tweet, with positive scores indicating positive sentiment, negative scores indicating negative sentiment, and neutral scores indicating neutral sentiment. The code we used to run sentiment analysis on the reviews made use of the VADER package in R. Specifically, we utilized the SentimentIntensityAnalyzer class from the vaderSentiment package. We then passed each preprocessed tweet through the SentimentIntensityAnalyzer to obtain a sentiment score.
+
+# Insights and Results
+
+#### Preliminary Exploratory Data Analysis
+We performed a simple exploratory data analysis on the "rating" column of the dataset. We counted the number of reviews for each star rating and plots a bar graph to visualize the distribution of reviews across different star ratings.
+
+```{r echo = FALSE, fig.align="center"}
+library(knitr)
+knitr::include_graphics("EDA.png")
+
+```
 
 
-	In conducting our project, we chose to analyze Amazon customer review data. Specifically, we wanted to discover the correlation between the sentiment of the words in reviews and the rating scores given. Furthermore, we wanted to investigate the difference in this correlation between several different product categories. The data we used was a public archive.zip from Kaggle, and contained within this file were 22 Gigabytes of data, organized into 37 .tsv files based on product categories. {discuss statistical computation and conclusion here}
-	As aforementioned, we received our data from Kaggle. We did this by writing bash scripts to download archive.zip from its download link and then unpack it. From there, we used HPC slurm to run 37 parallel jobs which each processed one of the .tsv files. These jobs used the ‘readr’ package to read the .tsv file and the ‘dplyr’ package to perform preprocessing steps. Observations (reviews) in which there was no entry for the variable ‘review_body’ were removed, as our sentiment analysis relied on having a body of text to parse. Columns which were irrelevant to our analysis were dropped to pare down the data. The last step of preprocessing was data imputation, during which we filled in any remaining ‘NA’ values with the column’s median value.
-	{discuss statistical computation at length here}
-	{include visuals}
-	One weakness of this particular data analysis project is that it uses a dataset which is unbalanced in regards to the number of observations for each rating score. There are significantly more reviews in which the customer awarded the product a ‘5’ than reviews with a ‘1’, ‘2’, ‘3’, or ‘4’, likely due to the fact that a customer is most likely to want to write a review for a product they were very pleased with. As a result, the results of our analysis may be biased towards that majority classification. Another weakness may be found in outliers in the dataset, in which observations with positive sentiments in their review body of text had rating scores that reflected the opposite.
-	Despite these weaknesses, though, we have found that there are strong correlations to be found between the variables in question. As displayed in our results, reviews which possess a positive sentiment in their text are strongly associated with four and five star ratings. Alternately, reviews with a negative sentiment in their text are strongly associated with one and two star ratings. This knowledge can help sellers on Amazon to make predictions which improve their sales and maximize customer satisfaction. If we were to take this project further, we would include natural language processing which – rather than just producing a positive, neutral, or negative sentiment score – analyzes keywords found most commonly across positive reviews and vice versa. This way, we can go beyond an analysis of the general sentiment to get an analysis of the more important product traits to customer satisfaction, enabling sellers to focus on specific aspects to increase ratings and sales.
+The bar plot provides an intuitive understanding of how many reviews were given for each star rating, giving a sense of how many customers were satisfied or dissatisfied with the product. 
+
+####Hypothesis Testing
+In order to test the hypothesis that a 5-star review is correlated with a positive text score, we created a barplot using the Seaborn library to visualize the compound scores assigned by the VADER sentiment analysis tool to each Amazon star review. The plot shows the average compound score for each star rating, with error bars representing the standard deviation.
+```{r echo = FALSE, fig.align="center"}
+library(knitr)
+knitr::include_graphics("Hypothesis.png")
+
+```
+The plot shows a clear trend, with the average compound score increasing with the star rating, from a low of approximately 0.15 for 1-star reviews to a high of approximately 0.4 for 5-star reviews. This suggests that there is indeed a correlation between a 5-star review and a positive text score, as the hypothesis stated.
+
+#### Sentiment Correlation
+In order to explore the relationship between Amazon star rating and the VADER sentiment analysis scores, we created a set of subplots using Matplotlib and Seaborn. 
+```{r echo = FALSE, fig.align="center"}
+library(knitr)
+knitr::include_graphics("Sentiment1.png")
+
+```
+We generated a row of three bar charts, each representing the positive, neutral, and negative sentiment scores for each star rating.
+
+To further explore the relationship between sentiment scores and star ratings, a pairplot was created using Seaborn's pairplot function.
+
+```{r echo = FALSE, fig.align="center"}
+library(knitr)
+knitr::include_graphics("Sentiment2.png")
+
+```
+The resulting pairplot shows scatterplots for each pair of variables, with the diagonal showing histograms for each variable. The points are colored based on the star rating, with 1-star reviews in blue, 2-star reviews in orange, 3-star reviews in green, 4-star reviews in red, and 5-star reviews in purple. From the plot, it appears that there is a general trend of increasing positivity scores (vader_pos) and decreasing negativity scores (vader_neg) as the star rating increases. Additionally, it appears that the 5-star reviews have a larger spread of positivity scores compared to the other ratings. Overall, this pairplot provides a visual confirmation of the hypothesis that positive sentiment scores are correlated with higher star ratings.
+
+#### Potential Weakness
+One weakness of this particular data analysis project is that it uses a dataset which is unbalanced in regards to the number of observations for each rating score.
+
+# Conclusion
+As displayed in our results, reviews which possess a positive sentiment in their text are strongly associated with four and five star ratings. Alternately, reviews with a negative sentiment in their text are strongly associated with one and two star ratings. This knowledge can help sellers on Amazon to make predictions which improve their sales and maximize customer satisfaction. If we were to take this project further, we would include natural language processing which – rather than just producing a positive, neutral, or negative sentiment score – analyzes keywords found most commonly across positive reviews and vice versa. This way, we can go beyond an analysis of the general sentiment to get an analysis of the more important product traits to customer satisfaction, enabling sellers to focus on specific aspects to increase ratings and sales.
