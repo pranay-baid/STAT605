@@ -79,3 +79,8 @@ One weakness of this particular data analysis project is that it uses a dataset 
 
 # Conclusion
 As displayed in our results, reviews which possess a positive sentiment in their text are strongly associated with four and five star ratings. Alternately, reviews with a negative sentiment in their text are strongly associated with one and two star ratings. This knowledge can help sellers on Amazon to make predictions which improve their sales and maximize customer satisfaction. If we were to take this project further, we would include natural language processing which – rather than just producing a positive, neutral, or negative sentiment score – analyzes keywords found most commonly across positive reviews and vice versa. This way, we can go beyond an analysis of the general sentiment to get an analysis of the more important product traits to customer satisfaction, enabling sellers to focus on specific aspects to increase ratings and sales.
+
+# Contributions
+Member | Proposal | Coding | Presentation | Report
+Jordan | 1        | 1      | 1            | 1
+Pranay | 1        | 1      | 1            | 1
