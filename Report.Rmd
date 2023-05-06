@@ -5,26 +5,16 @@ date: "5/5/2023"
 output: html_document
 ---
 
-```{r setup, include=FALSE}
-knitr::opts_chunk$set(echo = TRUE)
-```
+Word Limit: 750 words
 
-## R Markdown
+Introduction: summarize the data you analyzed, the question you pursued, your statistical computation, and your conclusion
+Body: describe your data (and its source, size, and cleaning), statistical computation, and results
+Include graphical and numeric summaries to efficiently communicate your conclusion
+Describe your statistical computation including the number of jobs you ran and the typical job time, memory, and disk space required
+Mention weaknesses of your work
+Conclusion: revisit your question and conclusion in the light of your report’s body. It could suggest future work.
 
-This is an R Markdown document. Markdown is a simple formatting syntax for authoring HTML, PDF, and MS Word documents. For more details on using R Markdown see <http://rmarkdown.rstudio.com>.
 
-When you click the **Knit** button a document will be generated that includes both content as well as the output of any embedded R code chunks within the document. You can embed an R code chunk like this:
-
-```{r cars}
-summary(cars)
-```
-
-## Including Plots
-
-You can also embed plots, for example:
-
-```{r pressure, echo=FALSE}
-plot(pressure)
-```
-
-Note that the `echo = FALSE` parameter was added to the code chunk to prevent printing of the R code that generated the plot.
+  In conducting our project, we chose to analyze Amazon customer review data. Specifically, we aimed to discover the correlation between the sentiment of the words in reviews and the rating scores given. Furthermore, we wanted to investigate the difference in this correlation between several different product categories. The data we used was a public archive.zip from Kaggle, and contained within this file were 22 Gigabytes of data, organized into 37 .tsv files based on product categories. {discuss statistical computation and conclusion here}.
+  
+  
